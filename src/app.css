@@ -1,0 +1,43 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/forms';
+
+@import '@skeletonlabs/skeleton';
+@import '@skeletonlabs/skeleton/optional/presets';
+@import '@skeletonlabs/skeleton/themes/cerberus';
+@source '../node_modules/@skeletonlabs/skeleton-svelte/dist';
+
+@import '@fontsource/open-sans';
+
+[data-theme='cerberus'] {
+  --heading-font-family: 'Open Sans', sans-serif;
+  --base-font-family: 'Open Sans', sans-serif;
+  --anchor-font-family: 'inherit';
+}
+
+.markdown h1 {
+    @apply text-3xl;
+}
+
+.markdown h2 {
+    @apply text-2xl;
+}
+
+.markdown h3 {
+    @apply text-xl;
+}
+
+@theme {
+    --color-s-yellow: #fdbe24;
+    --color-s-orange: #fc9427;
+    --color-s-red: #ec3a41;
+    --color-s-blue: #1c68c3;
+    --color-s-purple: #992f8c;
+    --color-s-lightblue: #14a5cd;
+    --color-s-teal: #1dbda5;
+    --color-s-green: #61d96a;
+    --color-s-light: #fcfcfc;
+    --color-s-dark: #121212;
+    --color-s-dark-2: #222222;
+    --color-s-dark-3: #2f3741;
+    --color-mint-500: oklch(0.72 0.11 178);
+}

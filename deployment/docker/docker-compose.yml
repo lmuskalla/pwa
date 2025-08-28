@@ -1,0 +1,32 @@
+services:
+  app:
+    container_name: ${PROJECT_NAME}-app
+    env_file: ".env"
+    build:
+      context: .
+      dockerfile: node/Dockerfile
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=web
+      - traefik.http.routers.${PROJECT_NAME}.entrypoints=websecure
+      - traefik.http.routers.${PROJECT_NAME}.rule=Host(`solyto.de`)
+      - traefik.http.routers.${PROJECT_NAME}.tls=true
+      - traefik.http.routers.${PROJECT_NAME}.tls.certresolver=leresolver
+      - traefik.http.services.${PROJECT_NAME}.loadbalancer.server.port=${LISTEN_PORT}
+    networks:
+      - web
+      - api
+      - public
+
+networks:
+  web:
+    external: true
+
+  public:
+    external: true
+
+  api:
+    external: true

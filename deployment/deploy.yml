@@ -1,0 +1,37 @@
+---
+- name: Deploy to sozialit vps
+  hosts: sozialit
+  tasks:
+    - name: Copy docker config
+      synchronize:
+        src: ./docker/
+        dest: /home/solyto/docker
+
+    - name: Copy Makefile
+      copy:
+        src: ./Makefile
+        dest: /home/solyto/Makefile
+
+    - name: Remove old source
+      shell:
+        "rm -rf /home/solyto/docker/src/"
+
+    - name: Copy new source
+      synchronize:
+        src: ../../
+        dest: /home/solyto/docker/src/
+        rsync_opts:
+          - "--exclude=deployment --exclude=database --exclude=vendor --exclude=storage --exclude=.env --exclude=composer.lock"
+
+    - name: Build images
+      shell:
+        "cd /home/solyto/docker && docker compose build"
+      register: docker_build
+
+    - debug:
+        msg: "{{docker_build.stdout_lines}}"
+
+    - name: Restart Docker
+      shell:
+        "cd /home/solyto/docker && docker compose down && docker compose up -d"
+      register: docker_restart
